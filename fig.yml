@@ -41,4 +41,11 @@ slave:
     - /sys:/sys:ro
   expose:
     - "5051"
-
+jenkins:
+  image: containersol/jenkins_with_docker
+  environment:
+    - DOCKER_HOST=172.17.42.1:4242
+  volumes:
+    - jenkins-stuff:/var/jenkins_home
+  ports: 
+    - "8081:8080"
