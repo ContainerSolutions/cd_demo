@@ -1,0 +1,44 @@
+# Zookeeper: -p 2181:2181 -p 2888:2888 -p 3888:3888
+zookeeper:
+  image: jplock/zookeeper:3.4.5
+  ports:
+    - "2181"
+master:
+  image: redjack/mesos-master:0.21.0
+  hostname: master
+  links:
+    - zookeeper:zookeeper
+  environment:
+    - MESOS_ZK=zk://zookeeper:2181/mesos
+    - MESOS_QUORUM=1
+    - MESOS_WORK_DIR=/var/lib/mesos
+    - MESOS_LOG_DIR=/var/log
+  ports:
+    - "5050:5050"
+marathon:
+  image: garland/mesosphere-docker-marathon
+  links:
+    - zookeeper:zookeeper
+  ports:
+    - "8080:8080"
+  # this image does not respect MARATHON_ env variables, so adding the params via command
+  command: --master zk://zookeeper:2181/mesos --zk zk://zookeeper:2181/marathon
+slave:
+  image: redjack/mesos-slave:0.21.0
+  links:
+    - zookeeper:zookeeper
+    - master:master
+  environment:
+    - MESOS_MASTER=zk://zookeeper:2181/mesos
+    - MESOS_EXECUTOR_REGISTRATION_TIMEOUT=5mins
+    - MESOS_CONTAINERIZERS=docker,mesos
+    - MESOS_ISOLATOR=cgroups/cpu,groups/mem
+    - MESOS_LOG_DIR=/var/log
+    - DOCKER_HOST=172.17.42.1:4242
+  volumes:
+    - /var/run/docker.sock:/run/docker.sock
+    - /usr/bin/docker:/usr/bin/docker
+    - /sys:/sys:ro
+  expose:
+    - "5051"
+
