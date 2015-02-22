@@ -1,0 +1,15 @@
+{
+    "id": "app", 
+    "container": {
+      "docker": {
+        "image": "localhost:5000/containersol/nodejs_app",
+        "network": "BRIDGE",
+        "portMappings": [
+          {"containerPort": 8000, "servicePort": 8000}
+        ]
+      }
+    },
+    "cpus": 0.2,
+    "mem": 512.0,
+    "instances": 1
+}
