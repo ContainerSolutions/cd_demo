@@ -32,7 +32,7 @@ slave:
     - MESOS_MASTER=zk://zookeeper:2181/mesos
     - MESOS_EXECUTOR_REGISTRATION_TIMEOUT=5mins
     - MESOS_CONTAINERIZERS=docker,mesos
-    - MESOS_ISOLATOR=cgroups/cpu,groups/mem
+    - MESOS_ISOLATOR=cgroups/cpu,cgroups/mem
     - MESOS_LOG_DIR=/var/log
     - DOCKER_HOST=172.17.42.1:4242
   volumes:
