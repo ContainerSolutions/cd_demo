@@ -16,7 +16,8 @@ master:
   ports:
     - "5050:5050"
 marathon:
-  image: garland/mesosphere-docker-marathon
+  #image: garland/mesosphere-docker-marathon
+  image: mesosphere/marathon
   links:
     - zookeeper:zookeeper
   ports:
@@ -34,18 +35,27 @@ slave:
     - MESOS_CONTAINERIZERS=docker,mesos
     - MESOS_ISOLATOR=cgroups/cpu,groups/mem
     - MESOS_LOG_DIR=/var/log
-    - DOCKER_HOST=172.17.42.1:4242
   volumes:
     - /var/run/docker.sock:/run/docker.sock
     - /usr/bin/docker:/usr/bin/docker
     - /sys:/sys:ro
+    - mesosslace-stuff:/var/log
   expose:
-    - "5051"
+    - "5051:5051"
 jenkins:
   image: containersol/jenkins_with_docker
-  environment:
-    - DOCKER_HOST=172.17.42.1:4242
   volumes:
     - jenkins-stuff:/var/jenkins_home
+    - .:/var/jenkins_data
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /usr/bin/docker:/usr/bin/docker
   ports: 
     - "8081:8080"
+registry:
+  image: registry
+  environment:
+    - STORAGE_PATH=/registry
+  volumes:
+    - registry-stuff:/registry
+  ports: 
+    - "5000:5000"
