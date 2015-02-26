@@ -2,7 +2,7 @@
     "id": "app", 
     "container": {
       "docker": {
-        "image": "localhost:5000/containersol/nodejs_app",
+        "image": "localhost:5000/containersol/nodejs_app:latest",
         "network": "BRIDGE",
         "portMappings": [
           {"containerPort": 8000, "servicePort": 8000}

@@ -41,7 +41,7 @@ slave:
     - /sys:/sys:ro
     - mesosslace-stuff:/var/log
   expose:
-    - "5051:5051"
+    - "5051"
 jenkins:
   image: containersol/jenkins_with_docker
   volumes:
