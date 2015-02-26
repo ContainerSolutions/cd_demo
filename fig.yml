@@ -44,6 +44,8 @@ slave:
     - "5051"
 jenkins:
   image: containersol/jenkins_with_docker
+  links: 
+    - marathon:marathon
   volumes:
     - jenkins-stuff:/var/jenkins_home
     - .:/var/jenkins_data
