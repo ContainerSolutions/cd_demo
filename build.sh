@@ -1,13 +1,5 @@
 #!/bin/bash
 
-
-#export DOCKER_HOST=172.17.42.1:4242
-# requires adding to /etc/hosts the following: 172.17.42.1     docker.local
-
-#pushd jenkins
-#docker build -t containersol/jenkins_with_docker .
-#popd
-
 if [ -z "${1}" ]; then
    version="latest"
 else
